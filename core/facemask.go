@@ -14,7 +14,7 @@ import (
 
 	"github.com/esimov/caire"
 	pigo "github.com/esimov/pigo/core"
-	"github.com/esimov/triangle"
+	"github.com/esimov/triangle/v2"
 )
 
 //go:embed cascade/facefinder

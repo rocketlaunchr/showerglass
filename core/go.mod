@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/esimov/caire v1.4.4
 	github.com/esimov/pigo v1.4.5
-	github.com/esimov/triangle v1.2.5
+	github.com/esimov/triangle/v2 v2.0.0
 	golang.org/x/image v0.0.0-20220321031419-a8550c1d254a
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 )
@@ -17,7 +17,7 @@ require (
 	github.com/disintegration/imaging v1.6.2 // indirect
 	github.com/fogleman/gg v1.3.0 // indirect
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
-	golang.org/x/exp v0.0.0-20220317015231-48e79f11773a // indirect
+	golang.org/x/exp v0.0.0-20220407100705-7b9b53b0aca4 // indirect
 	golang.org/x/exp/shiny v0.0.0-20220317015231-48e79f11773a // indirect
 	golang.org/x/sys v0.0.0-20211019181941-9d821ace8654 // indirect
 	golang.org/x/text v0.3.6 // indirect
