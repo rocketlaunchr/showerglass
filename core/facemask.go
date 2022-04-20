@@ -4,15 +4,16 @@ package showerglass
 
 import (
 	_ "embed"
-	"golang.org/x/image/draw"
-	"golang.org/x/sync/errgroup"
 	"image"
 	"io"
 	"sort"
 	"sync"
 
+	"golang.org/x/image/draw"
+	"golang.org/x/sync/errgroup"
+
 	"github.com/esimov/caire"
-	"github.com/esimov/pigo/core"
+	pigo "github.com/esimov/pigo/core"
 	"github.com/esimov/triangle"
 )
 
@@ -254,7 +255,7 @@ func FaceMask(input io.Reader, opts ...Options) (image.Image, string, error) {
 
 			// Step 4: Run Triangle algorithm
 			img := &triangle.Image{*tp}
-			triangled, _, _, err := img.Draw(new, nil, func() {})
+			triangled, _, _, err := img.Draw(new, *tp, func() {})
 			if err != nil {
 				return err
 			}
