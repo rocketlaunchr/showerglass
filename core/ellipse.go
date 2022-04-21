@@ -8,12 +8,10 @@ import (
 )
 
 type ellipse struct {
-	cx     int // center x
-	cy     int // center y
-	rx     int // semi-major axis x
-	ry     int // semi-minor axis y
-	width  int
-	height int
+	cx int // center x
+	cy int // center y
+	rx int // semi-minor axis x
+	ry int // semi-major axis y
 }
 
 func (e *ellipse) ColorModel() color.Model {

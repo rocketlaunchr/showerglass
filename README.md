@@ -14,6 +14,8 @@
 A soothing face filter where you can appreciate the beauty but not fully identify the person.
 Useful for social applications, blogging etc.
 
+You can read how it works in this [article](https://itnext.io/profile-photos-privacy-and-social-media-e66a908cd054). 
+
 # Features
 
 1. Resizing (Caire, NearestNeighbor, ApproxBiLinear, BiLinear, CatmullRom)
@@ -57,6 +59,9 @@ opts := showerglass.Options{
 			return &showerglass.Processor{
 				MaxPoints:  1500,
 				BlurRadius: 4,
+				BlurFactor: 1,
+				EdgeFactor: 6,
+				PointRate:  0.075,
 			}
 		}
 		return nil

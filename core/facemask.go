@@ -67,13 +67,13 @@ type Options struct {
 	// If nil is returned, no triangulation is performed.
 	//
 	// facearea is the size of the detected face. You can calibrate the returned *Processor parameters based on
-	// the area. The 2 most relevant parameters are BlurRadius and MaxPoints.
+	// the area. The 2 most relevant parameters are BlurRadius, BlurFactor, EdgeFactor, PointRate and MaxPoints.
 	//
 	// QRank indicates the rank of all the "detected faces". If only one face is expected,
 	// then you can return nil for all QRank > 0. If the Q value is _sufficiently_ low, you can
 	// presume a false positive and also return nil.
 	//
-	// See: https://pkg.go.dev/github.com/esimov/triangle#Processor
+	// See: https://pkg.go.dev/github.com/esimov/triangle/v2#Processor
 	TriangleConfig func(QRank, facearea int, Q float32, h, w int) *Processor
 
 	// ResizeAlg sets which resizing algorithm to use.
@@ -83,7 +83,7 @@ type Options struct {
 
 // Processor is a triangle.Processor.
 //
-// See: https://pkg.go.dev/github.com/esimov/triangle#Processor
+// See: https://pkg.go.dev/github.com/esimov/triangle/v2#Processor
 type Processor = triangle.Processor
 
 // FaceMask accepts an io.Reader (usually an *os.File) and returns an image with the FaceMask filter applied.
@@ -225,7 +225,7 @@ func FaceMask(input io.Reader, opts ...Options) (image.Image, string, error) {
 				},
 			}
 
-			area := (facesize.Bounds().Max.Y - facesize.Bounds().Min.Y) * (facesize.Bounds().Max.X - facesize.Bounds().Min.X)
+			area := facesize.Bounds().Dy() * facesize.Bounds().Dx()
 			var tp *Processor
 			if len(opts) > 0 && opts[0].TriangleConfig != nil {
 				tp = opts[0].TriangleConfig(idx, area, det.Q, resized.Bounds().Dy(), resized.Bounds().Dx())
@@ -238,12 +238,10 @@ func FaceMask(input io.Reader, opts ...Options) (image.Image, string, error) {
 
 			// Add to union mask
 			ellipse := &ellipse{
-				cx:     det.Col,
-				cy:     det.Row,
-				rx:     int(float64(det.Scale) * 0.8 / 2),
-				ry:     int(float64(det.Scale) * 0.8 / 1.6),
-				width:  resized.Bounds().Dx(),
-				height: resized.Bounds().Dy(),
+				cx: det.Col,
+				cy: det.Row,
+				rx: int(float64(det.Scale) * 0.8 / 2),
+				ry: int(float64(det.Scale) * 0.8 / 1.6),
 			}
 			unionLock.Lock()
 			draw.Draw(unionMask, unionMask.Bounds(), ellipse, image.Point{}, draw.Over)

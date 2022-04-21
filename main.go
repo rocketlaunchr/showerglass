@@ -25,8 +25,11 @@ func main() {
 			if QRank < 1 {
 				// only modify first detected face
 				return &showerglass.Processor{
-					MaxPoints:  1500,
+					MaxPoints:  4000,
 					BlurRadius: 4,
+					BlurFactor: 1,
+					EdgeFactor: 6,
+					PointRate:  0.075,
 				}
 			}
 			return nil
