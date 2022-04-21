@@ -6,11 +6,10 @@ import (
 	"log"
 	"os"
 
-	"github.com/rocketlaunchr/showerglass/core"
+	showerglass "github.com/rocketlaunchr/showerglass/core"
 )
 
 func main() {
-
 	f, err := os.Open("face.jpg")
 	if err != nil {
 		log.Fatalf("Error opening the file: %v", err)
@@ -27,6 +26,9 @@ func main() {
 				return &showerglass.Processor{
 					MaxPoints:  1500,
 					BlurRadius: 4,
+					BlurFactor: 2,
+					EdgeFactor: 4,
+					PointRate:  0.175,
 				}
 			}
 			return nil

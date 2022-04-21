@@ -73,7 +73,7 @@ type Options struct {
 	// then you can return nil for all QRank > 0. If the Q value is _sufficiently_ low, you can
 	// presume a false positive and also return nil.
 	//
-	// See: https://pkg.go.dev/github.com/esimov/triangle#Processor
+	// See: https://pkg.go.dev/github.com/esimov/triangle/v2#Processor
 	TriangleConfig func(QRank, facearea int, Q float32, h, w int) *Processor
 
 	// ResizeAlg sets which resizing algorithm to use.
@@ -83,7 +83,7 @@ type Options struct {
 
 // Processor is a triangle.Processor.
 //
-// See: https://pkg.go.dev/github.com/esimov/triangle#Processor
+// See: https://pkg.go.dev/github.com/esimov/triangle/v2#Processor
 type Processor = triangle.Processor
 
 // FaceMask accepts an io.Reader (usually an *os.File) and returns an image with the FaceMask filter applied.
