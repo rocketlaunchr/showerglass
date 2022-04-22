@@ -4,16 +4,15 @@ package showerglass
 
 import (
 	_ "embed"
+	"golang.org/x/image/draw"
+	"golang.org/x/sync/errgroup"
 	"image"
 	"io"
 	"sort"
 	"sync"
 
-	"golang.org/x/image/draw"
-	"golang.org/x/sync/errgroup"
-
 	"github.com/esimov/caire"
-	pigo "github.com/esimov/pigo/core"
+	"github.com/esimov/pigo/core"
 	"github.com/esimov/triangle/v2"
 )
 
