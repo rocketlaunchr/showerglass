@@ -2,9 +2,7 @@ module github.com/rocketlaunchr/showerglass
 
 go 1.18
 
-replace github.com/rocketlaunchr/showerglass/core => /Users/pj/software/facemask/core
-
-require github.com/rocketlaunchr/showerglass/core v0.0.0-20220406224448-4362915201f9
+require github.com/rocketlaunchr/showerglass/core latest
 
 require (
 	gioui.org v0.0.0-20211113093644-40bc2e1f88b8 // indirect
