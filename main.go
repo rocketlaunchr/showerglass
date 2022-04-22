@@ -21,10 +21,10 @@ func main() {
 		NewHeight: 100.0,
 		NewWidth:  100.0,
 		ResizeAlg: showerglass.CatmullRom,
-		TriangleConfig: func(QRank, facearea int, Q float32, h, w int) *showerglass.Processor {
+		TriangleConfig: func(QRank, facearea int, Q float32, h, w int, c showerglass.MaxPoints) *showerglass.TriangleConfig {
 			if QRank < 1 {
 				// only modify first detected face
-				return &showerglass.Processor{
+				return &showerglass.TriangleConfig{
 					MaxPoints:  4000,
 					BlurRadius: 4,
 					BlurFactor: 1,

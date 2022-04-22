@@ -62,29 +62,37 @@ type Options struct {
 	// A value of 0 indicates no change from the original width.
 	NewWidth interface{}
 
-	// TriangleConfig is called for each detected face. A *Processor must be returned to
+	// TriangleConfig is called for each detected face. A *TriangleConfig must be returned to
 	// modify the delaunay triangulation algorithm parameters.
 	// If nil is returned, no triangulation is performed.
 	//
-	// facearea is the size of the detected face. You can calibrate the returned *Processor parameters based on
-	// the area. The 2 most relevant parameters are BlurRadius, BlurFactor, EdgeFactor, PointRate and MaxPoints.
+	// facearea is the size of the detected face. You can calibrate the returned *TriangleConfig parameters based on
+	// the area. The 5 most relevant parameters are BlurRadius, BlurFactor, EdgeFactor, PointRate and MaxPoints.
 	//
 	// QRank indicates the rank of all the "detected faces". If only one face is expected,
 	// then you can return nil for all QRank > 0. If the Q value is _sufficiently_ low, you can
 	// presume a false positive and also return nil.
 	//
 	// See: https://pkg.go.dev/github.com/esimov/triangle/v2#Processor
-	TriangleConfig func(QRank, facearea int, Q float32, h, w int) *Processor
+	TriangleConfig func(QRank, facearea int, Q float32, h, w int, c MaxPoints) *TriangleConfig
 
 	// ResizeAlg sets which resizing algorithm to use.
 	// The default is "Caire".
 	ResizeAlg ResizeAlg
 }
 
-// Processor is a triangle.Processor.
+// MaxPoints takes a value between 0 and 1 and returns a calibrated MaxPoints value for use with TriangleConfig.
+// 0 means the face is closer to the original. 1 means the face is maximally obfuscated.
+//
+// See: https://pkg.go.dev/github.com/rocketlaunchr/showerglass/core#TriangleConfig
+//
+// NOTE: The implementation is experimental and subject to change. No backward-compatability guarantee!
+type MaxPoints func(float64) int
+
+// TriangleConfig is a triangle.Processor.
 //
 // See: https://pkg.go.dev/github.com/esimov/triangle/v2#Processor
-type Processor = triangle.Processor
+type TriangleConfig = triangle.Processor
 
 // FaceMask accepts an io.Reader (usually an *os.File) and returns an image with the FaceMask filter applied.
 // The type of image format used for the input is also returned.
@@ -97,8 +105,8 @@ func FaceMask(input io.Reader, opts ...Options) (image.Image, string, error) {
 	src := pigo.ImgToNRGBA(_src)
 
 	var (
-		oh int = src.Bounds().Max.Y - src.Bounds().Min.Y
-		ow int = src.Bounds().Max.X - src.Bounds().Min.X
+		oh int = src.Bounds().Dy()
+		ow int = src.Bounds().Dx()
 
 		nh int = oh
 		nw int = ow
@@ -226,14 +234,22 @@ func FaceMask(input io.Reader, opts ...Options) (image.Image, string, error) {
 			}
 
 			area := facesize.Bounds().Dy() * facesize.Bounds().Dx()
-			var tp *Processor
+			var tp *TriangleConfig
 			if len(opts) > 0 && opts[0].TriangleConfig != nil {
-				tp = opts[0].TriangleConfig(idx, area, det.Q, resized.Bounds().Dy(), resized.Bounds().Dx())
+				c := func(c float64) int {
+					if c == 0 {
+						return 0
+					}
+					Δ := 1.0 - float64(area)
+					return int(Δ*c + float64(area))
+				}
+
+				tp = opts[0].TriangleConfig(idx, area, det.Q, resized.Bounds().Dy(), resized.Bounds().Dx(), c)
 				if tp == nil {
 					return nil
 				}
 			} else {
-				tp = &Processor{}
+				tp = &TriangleConfig{}
 			}
 
 			// Add to union mask

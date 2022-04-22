@@ -53,10 +53,10 @@ opts := showerglass.Options{
 	NewHeight: 100.0,
 	NewWidth:  100.0,
 	ResizeAlg: showerglass.CatmullRom,
-	TriangleConfig: func(QRank, facearea int, Q float32, h, w int) *showerglass.Processor {
+	TriangleConfig: func(QRank, facearea int, Q float32, h, w int, c showerglass.MaxPoints) *showerglass.TriangleConfig {
 		if QRank < 1 {
 			// only modify first detected face
-			return &showerglass.Processor{
+			return &showerglass.TriangleConfig{
 				MaxPoints:  1500,
 				BlurRadius: 4,
 				BlurFactor: 1,
@@ -80,7 +80,7 @@ jpeg.Encode(out, masked, &jpeg.Options{Quality: 100})
 * A higher `MaxPoints` means the face looks closer to the original.
 * A lower `MaxPoints` (with the exception of `0`) means a more obfuscated face.
 
-Based on the `facearea` relative to `h×w`, you need to calibrate `MaxPoints` to achieve the desired _feel_.
+Based on the `facearea`, you need to calibrate `MaxPoints` to achieve the desired _feel_.
 
 ## Credits
 
