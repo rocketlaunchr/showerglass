@@ -42,8 +42,7 @@ import "github.com/rocketlaunchr/showerglass/core"
 
 
 ```go
-import	"image/jpeg"
-import	"os"
+import	("image/jpeg"; "os";)
 import	"github.com/rocketlaunchr/showerglass/core"
 
 f, _ := os.Open("face.jpg")

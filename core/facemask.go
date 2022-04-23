@@ -85,7 +85,7 @@ type Options struct {
 //
 // See: https://pkg.go.dev/github.com/rocketlaunchr/showerglass/core#TriangleConfig
 //
-// NOTE: The implementation is experimental and subject to change. No backward-compatability guarantee!
+// NOTE: The implementation is experimental and subject to change. No backward-compatibility guarantee!
 type MaxPoints func(float64) int
 
 // TriangleConfig is a triangle.Processor.
