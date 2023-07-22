@@ -6,11 +6,10 @@ import (
 	"log"
 	"os"
 
-	"github.com/rocketlaunchr/showerglass/core"
+	"github.com/rocketlaunchr/showerglass"
 )
 
 func main() {
-
 	f, err := os.Open("face.jpg")
 	if err != nil {
 		log.Fatalf("Error opening the file: %v", err)
@@ -50,5 +49,4 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error encoding to file: %s", err)
 	}
-
 }
